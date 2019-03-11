@@ -5,7 +5,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -61,21 +60,25 @@ public class CodeGuardMoJo extends AbstractMojo
 	@Parameter
 	private String tempOutDirName = "temp_guard";
 
-	public CodeGuardMoJo()
-	{
-	}
-
 	static
 	{
-//		System.loadLibrary("agent");
+		String path = LibUtils.copyLib("libjcencryption");
+		System.out.println(path);
+		System.load(path);
 	}
 
-//	public native static byte[] encrypt(byte[] text);
+	public native static byte[] encrypt(byte[] text);
 
 	// for test
-	public static byte[] encrypt(byte[] text)
+//	public static byte[] encrypt(byte[] text)
+//	{
+//		return text;
+//	}
+
+
+	public CodeGuardMoJo()
 	{
-		return text;
+		LibUtils.setLog(getLog());
 	}
 
 	@Override
