@@ -60,13 +60,6 @@ public class CodeGuardMoJo extends AbstractMojo
 	@Parameter
 	private String tempOutDirName = "temp_guard";
 
-	static
-	{
-		String path = LibUtils.copyLib("libjcencryption");
-		System.out.println(path);
-		System.load(path);
-	}
-
 	public native static byte[] encrypt(byte[] text);
 
 	// for test
@@ -75,15 +68,19 @@ public class CodeGuardMoJo extends AbstractMojo
 //		return text;
 //	}
 
-
-	public CodeGuardMoJo()
+	private void load()
 	{
 		LibUtils.setLog(getLog());
+
+		String path = LibUtils.exportLib("libjcencryption");
+		getLog().debug("lib暂存path: " + path);
+		System.load(path);
 	}
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
+		load();
 
 		if(project.getPackaging().equals("pom"))
 		{
@@ -273,7 +270,9 @@ public class CodeGuardMoJo extends AbstractMojo
 		byte[] encrypt = null;
 		try
 		{
+			getLog().debug("加密输入字节:" + fileData.length);
 			encrypt = CodeGuardMoJo.encrypt(fileData);
+			getLog().debug("加密输出字节:" + encrypt.length);
 		}
 		catch(Exception e)
 		{

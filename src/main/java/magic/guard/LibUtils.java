@@ -34,7 +34,7 @@ public class LibUtils
 	}
 
 	//主要为打成jar包使用
-	public synchronized static String copyLib(String libName)
+	public synchronized static String exportLib(String libName)
 	{
 		String systemType = System.getProperty("os.name");
 		if(logEnable())
@@ -76,7 +76,10 @@ public class LibUtils
 			try(InputStream in = LibUtils.class.getResourceAsStream(libPath))
 			{
 				URL url = LibUtils.class.getResource(libPath);
-				System.out.println(url);
+				if(logEnable())
+				{
+					log.debug("lib原始path: " + url.toString());
+				}
 				if(in != null)
 				{
 					FileUtils.copyToFile(in, lib_tmp);
