@@ -10,6 +10,31 @@
 
 	<packaging>maven-plugin</packaging>
 
+	<name>codeguard-maven-plugin</name>
+	<description>Open Source maven plugin for code encryption.</description>
+	<url>https://github.com/binmagic/codeguard-maven-plugin</url>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>xubao</name>
+			<email>a_xubao@163.com</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:binmagic/codeguard-maven-plugin.git</connection>
+		<developerConnection>scm:git:git@github.com:binmagic/codeguard-maven-plugin.git</developerConnection>
+		<url>https://github.com/binmagic/codeguard-maven-plugin</url>
+	</scm>
+
+
 	<properties>
 		<!-- 文件拷贝时的编码 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
