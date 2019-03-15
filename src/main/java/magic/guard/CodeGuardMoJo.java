@@ -58,6 +58,9 @@ public class CodeGuardMoJo extends AbstractMojo
 	private boolean skip;
 
 	@Parameter
+	private boolean coverOriginal;
+
+	@Parameter
 	private String tempOutDirName = "temp_guard";
 
 	public native static byte[] encrypt(byte[] text);
@@ -94,7 +97,7 @@ public class CodeGuardMoJo extends AbstractMojo
 			return;
 		}
 
-		if(includes == null)
+		if(includes == null || includes.isEmpty())
 		{
 			includes = new HashSet<>(Arrays.asList(".*\\.class"));
 		}
@@ -156,6 +159,17 @@ public class CodeGuardMoJo extends AbstractMojo
 		{
 			throw new MojoExecutionException("对jar进行加密失败", e);
 		}
+		finally
+		{
+			try
+			{
+				jarFile.close();
+			}
+			catch(IOException e)
+			{
+				throw new MojoExecutionException("close失败", e);
+			}
+		}
 
 		try
 		{
@@ -179,6 +193,30 @@ public class CodeGuardMoJo extends AbstractMojo
 			}
 		}
 
+		if(coverOriginal)
+		{
+			try
+			{
+				getLog().info("覆盖原始jar");
+				int index = injar.lastIndexOf(".");
+				String name = injar.substring(0, index);
+				String tail = injar.substring(index);
+				File original = new File(inputDirectory, name + "-pg-original" + tail);
+				if(original.exists())
+				{
+					FileUtils.forceDelete(original);
+				}
+				FileUtils.moveFile(inJarFile, original);
+
+				FileUtils.copyFile(outJarFile, inJarFile);
+
+				getLog().info("原始jar改为:" + original.getAbsolutePath());
+			}
+			catch(IOException e)
+			{
+				throw new MojoExecutionException("覆盖原始jar失败", e);
+			}
+		}
 	}
 
 	private void doGuardForJar(JarFile inJar, File outDir, RegMatcher include, RegMatcher exclude) throws MojoExecutionException, IOException
