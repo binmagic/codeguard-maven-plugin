@@ -38,3 +38,4 @@ maven plugin for java byte code encrypt!
 * excludes set类型,使用正则表达式进行路径匹配(排除的匹配成功一定不加密)
 * removeTempOutDir boolean类型,表示是否删除加密过程中生成的临时文件夹
 * skip boolean类型,表示是否跳过加密操作
+* coverOriginal boolean类型,表示是否覆盖原始jar包
