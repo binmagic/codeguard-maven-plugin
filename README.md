@@ -29,7 +29,7 @@ maven plugin for java byte code encrypt!
 		</configuration>
 </plugin>
 ```
-#### 配置说明
+#### configuration配置说明
 * injar 要进行加密jar包的名称
 * outjar 加密后jar包的名称
 * inputDirectory injar所在目录(默认为maven打包的输出目录)
